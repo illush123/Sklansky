@@ -12,19 +12,20 @@ module SklanskyAdder_16(A, B, SUM, CO);
   genvar i;
 
   parameter SIZE = 16;
+
   //calc P,G from A,B
   generate
     for(i=0;i<SIZE;i=i+1) begin
       OR2 U1_1(.A(A[i]), .B(B[i]), .Y(PO[i][0]));
       AN2 U1_2(.A(A[i]), .B(B[i]), .Y(GO[i][0]));
-      end
+    end
   endgenerate
 
   //2bit_loop
   generate
     for(i=0;i<SIZE;i=i+2) begin
       PrefixBox B11(PO[i][0], GO[i][0], PO[i+1][0], GO[i+1][0], PO[i+1][1], GO[i+1][1]);
-      end
+    end
   endgenerate
 
   //4bit_loop
@@ -42,12 +43,12 @@ module SklanskyAdder_16(A, B, SUM, CO);
       PrefixBox B31(PO[i+1][1], GO[i+1][1], PO[i-1][2], GO[i-1][2], PO[i+1][3], GO[i+1][3]);
       PrefixBox B32(PO[i+2][2], GO[i+2][2], PO[i-1][2], GO[i-1][2], PO[i+2][3], GO[i+2][3]);
       PrefixBox B33(PO[i+3][2], GO[i+3][2], PO[i-1][2], GO[i-1][2], PO[i+3][3], GO[i+3][3]);
-      end
+    end
   endgenerate
 
   //16bit_loop(once)
   generate
-    for(i=8;i<SIZE;i=i+8) begin
+    for(i=8;i<SIZE;i=i+16) begin
       PrefixBox B40(PO[i][0], GO[i][0], PO[i-1][3], GO[i-1][3], PO[i][4], GO[i][4]);
       PrefixBox B41(PO[i+1][1], GO[i+1][1], PO[i-1][3], GO[i-1][3], PO[i+1][4], GO[i+1][4]);
       PrefixBox B42(PO[i+2][2], GO[i+2][2], PO[i-1][3], GO[i-1][3], PO[i+2][4], GO[i+2][4]);
@@ -56,7 +57,7 @@ module SklanskyAdder_16(A, B, SUM, CO);
       PrefixBox B45(PO[i+5][3], GO[i+5][3], PO[i-1][3], GO[i-1][3], PO[i+5][4], GO[i+5][4]);
       PrefixBox B46(PO[i+6][3], GO[i+6][3], PO[i-1][3], GO[i-1][3], PO[i+6][4], GO[i+6][4]);
       PrefixBox B47(PO[i+7][3], GO[i+7][3], PO[i-1][3], GO[i-1][3], PO[i+7][4], GO[i+7][4]);
-      end
+    end
   endgenerate
 
   wire CI;
@@ -96,7 +97,7 @@ module test_adder;
   SklanskyAdder_16 Adder(.A(A), .B(B), .SUM(SUM), .CO(CO));
 
   assign ANS = A + B;
-
+git
   initial begin
   $monitor($time, " A=%b,B=%b, (SUM,CO)=(%b,%b),ANS=(%b,%b)", A, B, SUM, CO, ANS[15:0], ANS[16]);
   A = 16'b0; B = 16'b0;
