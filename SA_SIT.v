@@ -5,11 +5,28 @@ module SklanskyAdder_16(A, B, SUM, CO);
   input [15:0] B;
   output [15:0] SUM;
   output CO;
-
   wire [15:0] P;
   wire [15:0] G;
 
-  PGCalc PGU(A, B, P, G);
+  XOR U1_0(.A(A[0]), .B(B[0]), .Y(SUM[0]));
+  XOR U1_1(.A(A[1]), .B(B[1]), .Y(sum1));
+  XOR U1_2(.A(A[2]), .B(B[2]), .Y(sum2));
+  XOR U1_3(.A(A[3]), .B(B[3]), .Y(sum3));
+  XOR U1_4(.A(A[4]), .B(B[4]), .Y(sum4));
+  XOR U1_5(.A(A[5]), .B(B[5]), .Y(sum5));
+  XOR U1_6(.A(A[6]), .B(B[6]), .Y(sum6));
+  XOR U1_7(.A(A[7]), .B(B[7]), .Y(sum7));
+  XOR U1_8(.A(A[8]), .B(B[8]), .Y(sum8));
+  XOR U1_9(.A(A[9]), .B(B[9]), .Y(sum9));
+  XOR U1_10(.A(A[10]), .B(B[10]), .Y(sum10));
+  XOR U1_11(.A(A[11]), .B(B[11]), .Y(sum11));
+  XOR U1_12(.A(A[12]), .B(B[12]), .Y(sum12));
+  XOR U1_13(.A(A[13]), .B(B[13]), .Y(sum13));
+  XOR U1_14(.A(A[14]), .B(B[14]), .Y(sum14));
+  XOR U1_15(.A(A[15]), .B(B[15]), .Y(sum15));
+
+
+  PGCalc PGCalc(A, B, P, G);
   //layer 1 (2bit)
   PrefixBox B11(P[0], G[0], P[1], G[1], p11, g11);
   PrefixBox B31(P[2], G[2], P[3], G[3], p31, g31);
@@ -50,9 +67,23 @@ module SklanskyAdder_16(A, B, SUM, CO);
   GPrefixBox B144(g73, p143, g143, g144);
   GPrefixBox B154(g73, p153, g153, g154);
 
-
-  //Add A + B + Carry
-  XOR U3_0(.A(A[0]), .B(B[0]), .Y(SUM[0]));
+  XOR U2_1(.A(sum1), .B(G[0]), .Y(SUM[1]));
+  XOR U2_2(.A(sum2), .B(g11), .Y(SUM[2]));
+  XOR U2_3(.A(sum3), .B(g22), .Y(SUM[3]));
+  XOR U2_4(.A(sum4), .B(g32), .Y(SUM[4]));
+  XOR U2_5(.A(sum5), .B(g43), .Y(SUM[5]));
+  XOR U2_6(.A(sum6), .B(g53), .Y(SUM[6]));
+  XOR U2_7(.A(sum7), .B(g63), .Y(SUM[7]));
+  XOR U2_8(.A(sum8), .B(g73), .Y(SUM[8]));
+  XOR U2_9(.A(sum9), .B(g84), .Y(SUM[9]));
+  XOR U2_10(.A(sum10), .B(g94), .Y(SUM[10]));
+  XOR U2_11(.A(sum11), .B(g104), .Y(SUM[11]));
+  XOR U2_12(.A(sum12), .B(g114), .Y(SUM[12]));
+  XOR U2_13(.A(sum13), .B(g124), .Y(SUM[13]));
+  XOR U2_14(.A(sum14), .B(g134), .Y(SUM[14]));
+  XOR U2_15(.A(sum15), .B(g144), .Y(SUM[15]));
+  /*
+  XOR U1_0(.A(A[0]), .B(B[0]), .Y(SUM[0]));
   FA U3_1(.A(A[1]), .B(B[1]), .CI(G[0]), .CO(), .SO(SUM[1]));
   FA U3_2(.A(A[2]), .B(B[2]), .CI(g11), .CO(), .SO(SUM[2]));
   FA U3_3(.A(A[3]), .B(B[3]), .CI(g22), .CO(), .SO(SUM[3]));
@@ -67,7 +98,7 @@ module SklanskyAdder_16(A, B, SUM, CO);
   FA U3_12(.A(A[12]), .B(B[12]), .CI(g114), .CO(), .SO(SUM[12]));
   FA U3_13(.A(A[13]), .B(B[13]), .CI(g124), .CO(), .SO(SUM[13]));
   FA U3_14(.A(A[14]), .B(B[14]), .CI(g134), .CO(), .SO(SUM[14]));
-  FA U3_15(.A(A[15]), .B(B[15]), .CI(g144), .CO(), .SO(SUM[15]));
+  FA U3_15(.A(A[15]), .B(B[15]), .CI(g144), .CO(), .SO(SUM[15]));*/
   assign CO = g154;
 endmodule
 
@@ -161,6 +192,7 @@ module test_adder;
   #100 B <= 16'b1110100111100000;
   #100 A <= 16'b0011111001011110;
   #100 B <= 16'hffff;
+  #100 A <= 16'h00ec;
   #2000 $finish;
   end
 
